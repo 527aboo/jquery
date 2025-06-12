@@ -14,9 +14,9 @@ function getAjax(){
 }
 var ajax = getAjax();
 ajax.done(function(html){
-	console.log('done : ' + html);
-}).fail(function(thml) {
-	alert('fail');
+        console.log('done : ' + html);
+}).fail(function(xhr) {
+        alert('fail');
 });
 
 //Promiseオブジェクトを返却
@@ -24,14 +24,16 @@ function getPromise(){
 	
 	var defer = $.Deferred();
 
-	var jqXHR = $.ajax({
-		url : "../loading/test.html",
-		type : "POST",
-		dataType : "html",
-		timeout : 60000
-	}).done(function(xhr) {
-		defer.resolve(xhr);
-	});
+        var jqXHR = $.ajax({
+                url : "../loading/test.html",
+                type : "POST",
+                dataType : "html",
+                timeout : 60000
+        }).done(function(xhr) {
+                defer.resolve(xhr);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+                defer.reject(jqXHR, textStatus, errorThrown);
+        });
 	
 	return defer.promise();
 }
